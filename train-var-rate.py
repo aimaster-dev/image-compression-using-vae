@@ -14,15 +14,15 @@ def parse_args():
     # ====== set the run settings ======
     parser = argparse.ArgumentParser()
     # wandb setting
-    parser.add_argument('--wbproject',  type=str,  default='default')
-    parser.add_argument('--wbentity',   type=str,  default=None)
-    parser.add_argument('--wbgroup',    type=str,  default='var-rate-exp')
+    parser.add_argument('--wbproject',  type=str,  default='qarv')
+    parser.add_argument('--wbentity',   type=str,  default='prof-zhu-compression')
+    parser.add_argument('--wbgroup',    type=str,  default='qarv-tiny')
     parser.add_argument('--wbtags',     type=str,  default=None, nargs='+')
     parser.add_argument('--wbnote',     type=str,  default=None)
     parser.add_argument('--wbmode',     type=str,  default='disabled')
     parser.add_argument('--name',       type=str,  default=None)
     # model setting
-    parser.add_argument('--model',      type=str,  default='qarv_base')
+    parser.add_argument('--model',      type=str,  default='qv2_3z')
     parser.add_argument('--model_args', type=str,  default='')
     # resume setting
     parser.add_argument('--resume',     type=str,  default=None)
@@ -38,13 +38,15 @@ def parse_args():
     parser.add_argument('--accum_num',  type=int,  default=1)
     parser.add_argument('--optimizer',  type=str,  default='adam')
     parser.add_argument('--lr',         type=float,default=2e-4)
-    parser.add_argument('--lr_sched',   type=str,  default='const-0.5-cos')
-    parser.add_argument('--lrf_min',    type=float,default=0.01)
+    parser.add_argument('--lr_sched',   type=str,  default='constant')
+    parser.add_argument('--lrf_min',    type=float,default=0.1)
     parser.add_argument('--lr_warmup',  type=int,  default=0)
     parser.add_argument('--grad_clip',  type=float,default=2.0)
-    # training iterations setting
-    parser.add_argument('--iterations', type=int,  default=2_000_000)
+    # training setting
+    parser.add_argument('--iterations', type=int,  default=1_000_000)
     parser.add_argument('--eval_first', action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument('--amp',        action=argparse.BooleanOptionalAction, default=False)
+    parser.add_argument('--compile',    action=argparse.BooleanOptionalAction, default=False)
     # exponential moving averaging (EMA)
     parser.add_argument('--ema',        action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument('--ema_decay',  type=float,default=0.9999)
@@ -56,7 +58,6 @@ def parse_args():
 
     # default settings
     cfg.wdecay = 0.0
-    cfg.amp = False
     cfg.wandb_log_interval = 100
     cfg.model_log_interval = 2000
     cfg.model_val_interval = 2000
